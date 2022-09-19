@@ -29,35 +29,46 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> data = [];
-  Map<String, bool?> checkMap = Map();
+  Map<String, bool> checkMap = Map();
+  List<String> inCurrentView = [];
+  List<bool> currentViewValues = [true, false];
 
   _MyHomePageState();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title), actions: [
+        IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              _showDialog(context);
+            })
+      ]),
       body: ListView.separated(
         padding: const EdgeInsets.all(8),
-        itemCount: data.length,
+        itemCount: inCurrentView.length,
         itemBuilder: (BuildContext context, int index) {
           return CheckboxListTile(
             controlAffinity: ListTileControlAffinity.leading,
-            value: checkMap[data[index]],
+            value: checkMap[inCurrentView[index]],
             onChanged: (bool? value) {
               setState(() {
-                checkMap[data[index]] = value!;
+                checkMap[inCurrentView[index]] = value!;
               });
+              nagotKladd();
             },
-            title: _crossedoutListTitle(data[index], checkMap[data[index]]),
+            title: _crossedoutListTitle(
+                inCurrentView[index], checkMap[inCurrentView[index]]),
             secondary: IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
                 setState(() {
-                  final String current = data[index];
-                  data.removeAt(index);
-                  if (data.contains(current) == false) {
+                  final String current = inCurrentView[index];
+                  inCurrentView.removeAt(index);
+                  data.removeWhere((element) => element == current);
+                  if (data.contains(current) == false &&
+                      inCurrentView.contains(current) == false) {
                     checkMap.remove(current);
                   }
                 });
@@ -79,10 +90,10 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(
             () {
               data = recievedData;
+              inCurrentView = recievedData;
               for (var i = 0; i < data.length; i++) {
                 if (checkMap.containsKey(data[i]) == false) {
                   checkMap[data[i]] = false;
-                  //print(checkMap);
                 }
               }
             },
@@ -94,11 +105,82 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  // Widget _changeAllButton(title, value) {
+  //   return TextButton(
+  //     onPressed: (() {
+  //       setState(
+  //         () {
+  //           checkMap.updateAll((name, val) => val = value);
+  //           Navigator.pop(context);
+  //         },
+  //       );
+  //     }),
+  //     child: Text(title),
+  //   );
+  // }
+
+  void nagotKladd() {
+    List<String> _inCurrentView = [];
+    data.forEach(
+      (element) {
+        if (currentViewValues.contains(checkMap[element])) {
+          _inCurrentView.add(element);
+        }
+      },
+    );
+    setState(() {
+      inCurrentView = _inCurrentView;
+    });
+    //Navigator.pop(context);
+  }
+
+  void _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Container(
+              height: 150,
+              width: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          currentViewValues = [true, false];
+                          nagotKladd();
+                        });
+                      },
+                      child: Text('All')),
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          currentViewValues = [false];
+                          nagotKladd();
+                        });
+                      },
+                      child: Text('Undone')),
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          currentViewValues = [true];
+                          nagotKladd();
+                        });
+                      },
+                      child: Text('Done'))
+                ],
+              )),
+        );
+      },
+    );
+  }
+
   Widget _crossedoutListTitle(String listTitle, bool? value) {
     if (value == true) {
       return Text(
         listTitle,
-        style: TextStyle(decoration: TextDecoration.lineThrough),
+        style: const TextStyle(decoration: TextDecoration.lineThrough),
       );
     } else {
       return Text(listTitle);
@@ -133,8 +215,19 @@ class SecondView extends StatelessWidget {
   }
 
   void _addButtonPress(context) {
+    var toAdd = myController.text;
     if (myController.text != '') {
-      tasks.add(myController.text);
+      if (tasks.contains(toAdd)) {
+        var n = 2;
+
+        while (tasks.contains(toAdd + ' ($n)')) {
+          n++;
+        }
+
+        toAdd += (' ($n)');
+      }
+
+      tasks.add(toAdd);
       Navigator.pop(context, tasks);
     }
 
