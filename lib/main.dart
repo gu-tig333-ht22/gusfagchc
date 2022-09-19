@@ -42,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
         IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              List<String> _inCurrentView = [];
               _showDialog(context);
             })
       ]),
@@ -57,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
               setState(() {
                 checkMap[inCurrentView[index]] = value!;
               });
+              nagotKladd();
             },
             title: _crossedoutListTitle(
                 inCurrentView[index], checkMap[inCurrentView[index]]),
@@ -64,12 +64,11 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: const Icon(Icons.close),
               onPressed: () {
                 setState(() {
-                  final String current = data[index];
-                  //data.removeAt(index);
-                  data.removeWhere(
-                      (element) => element == inCurrentView[index]);
+                  final String current = inCurrentView[index];
                   inCurrentView.removeAt(index);
-                  if (data.contains(current) == false) {
+                  data.removeWhere((element) => element == current);
+                  if (data.contains(current) == false &&
+                      inCurrentView.contains(current) == false) {
                     checkMap.remove(current);
                   }
                 });
@@ -132,6 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       inCurrentView = _inCurrentView;
     });
+    //Navigator.pop(context);
   }
 
   void _showDialog(BuildContext context) {
@@ -169,13 +169,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         });
                       },
                       child: Text('Done'))
-
-                  // TextButton(onPressed: setState(() {
-                  //   currentViewValues = [true]
-                  // });, child: Text('Done')),
-                  // TextButton(onPressed: setState(() {
-                  //   currentViewValues = [false]
-                  // });, child: Text('All')),
                 ],
               )),
         );
@@ -222,8 +215,19 @@ class SecondView extends StatelessWidget {
   }
 
   void _addButtonPress(context) {
+    var toAdd = myController.text;
     if (myController.text != '') {
-      tasks.add(myController.text);
+      if (tasks.contains(toAdd)) {
+        var n = 2;
+
+        while (tasks.contains(toAdd + ' ($n)')) {
+          n++;
+        }
+
+        toAdd += (' ($n)');
+      }
+
+      tasks.add(toAdd);
       Navigator.pop(context, tasks);
     }
 
