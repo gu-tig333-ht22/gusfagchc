@@ -105,20 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  // Widget _changeAllButton(title, value) {
-  //   return TextButton(
-  //     onPressed: (() {
-  //       setState(
-  //         () {
-  //           checkMap.updateAll((name, val) => val = value);
-  //           Navigator.pop(context);
-  //         },
-  //       );
-  //     }),
-  //     child: Text(title),
-  //   );
-  // }
-
   void nagotKladd() {
     List<String> _inCurrentView = [];
     data.forEach(
@@ -131,7 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       inCurrentView = _inCurrentView;
     });
-    //Navigator.pop(context);
   }
 
   void _showDialog(BuildContext context) {
