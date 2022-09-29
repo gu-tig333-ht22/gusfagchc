@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './model.dart';
-import './api_methods.dart';
 
 class CreateTaskView extends StatelessWidget {
   final ToDoTask task;
@@ -26,9 +25,10 @@ class CreateTaskView extends StatelessWidget {
 
   void _addButtonPress(context) {
     task.title = myController.text;
-
     myController.text = '';
-    Navigator.pop(context, task);
+    if (task.title != '') {
+      Navigator.pop(context, task);
+    }
   }
 
   Widget _addTextField(context) {
