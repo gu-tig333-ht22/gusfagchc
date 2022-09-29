@@ -58,14 +58,6 @@ class ToDoTask {
   ToDoTask({this.id, required this.title, required this.done});
 
   String toAPI() => jsonEncode({'title': title, 'done': done});
-
-  // factory ToDoTask.fromJson(Map<String, dynamic> json) {
-  //   return ToDoTask(
-  //     id: json['id'],
-  //     title: json['title'],
-  //     done: json['done'],
-  //   );
-  // }
 }
 
 class ToDoList extends StatelessWidget {
@@ -80,14 +72,14 @@ class ToDoList extends StatelessWidget {
 
   Widget _todoItem(context, ToDoTask todo) {
     return ListTile(
+      onLongPress: () {},
       leading: Checkbox(
         value: todo.done,
         onChanged: (value) async {
-          var MyStateValue = Provider.of<MyState>(context, listen: false);
-          MyStateValue.changeValue(todo);
+          var myStateValue = Provider.of<MyState>(context, listen: false);
+          myStateValue.changeValue(todo);
           var apiData = await APIhandler.changeToDo(todo);
-          MyStateValue.updateListState(apiData);
-          print('list state was updated');
+          myStateValue.updateListState(apiData);
         },
       ),
       title: todo.done
@@ -105,7 +97,6 @@ class ToDoList extends StatelessWidget {
           state.removeTask(todo);
           var apiData = await APIhandler.deleteToDo(todo);
           state.updateListState(apiData);
-          print('list state was updated');
         },
       ),
     );

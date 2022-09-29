@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'TIG333 ToDo-List App',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.grey,
         ),
         home: ToDoListView());
   }
@@ -76,6 +76,7 @@ class ToDoListView extends StatelessWidget {
                   CreateTaskView(ToDoTask(title: '', done: false)),
             ),
           );
+
           state.addTask(recievedData);
           var apiData = await APIhandler.postToDo(recievedData);
           state.updateListState(apiData);
