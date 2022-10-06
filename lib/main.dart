@@ -37,7 +37,6 @@ class ToDoListView extends StatelessWidget {
         actions: [
           PopupMenuButton(
             onSelected: (value) {
-              //var filterValue = value;
               var state = Provider.of<MyState>(context, listen: false);
               state.setFilter(value);
             },
@@ -95,3 +94,5 @@ class ToDoListView extends StatelessWidget {
     }
   }
 }
+
+//crash on return to home view should be fixed
