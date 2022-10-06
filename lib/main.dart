@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './create_task_view.dart';
 import './model.dart';
-import './api_methods.dart';
 
 void main() async {
-  List<ToDoTask> fetchedList = await APIhandler.fetchToDoList();
-  var state = MyState(fetchedList);
+  var state = MyState();
+  state.listInit();
   runApp(ChangeNotifierProvider(
     create: (context) => state,
     child: const MyApp(),
@@ -19,12 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'TIG333 ToDo-List App',
-        theme: ThemeData(
-          primarySwatch: Colors.grey,
-        ),
-        home: ToDoListView());
+      debugShowCheckedModeBanner: false,
+      title: 'TIG333 ToDo-List App',
+      theme: ThemeData(
+        primarySwatch: Colors.grey,
+      ),
+      home: ToDoListView(),
+    );
   }
 }
 
@@ -77,8 +77,6 @@ class ToDoListView extends StatelessWidget {
           );
 
           state.addTask(recievedData);
-          var apiData = await APIhandler.postToDo(recievedData);
-          state.updateListState(apiData);
         },
       ),
     );
