@@ -56,29 +56,3 @@ class APIhandler {
 
   void getMyIp() async {}
 }
-
-
-// GET /register
-// Get your API key
-
-// GET /todos?key=[YOUR API KEY]
-// List todos.
-
-// Will return an array of todos.
-
-// POST /todos?key=[YOUR API KEY]
-// Add todo.
-
-// Takes a Todo as payload (body). Remember to set the Content-Type header to application/json.
-
-// Will return the entire list of todos, including the added Todo, when successful.
-
-// PUT /todos/:id?key=[YOUR API KEY]
-// Update todo with :id
-
-// Takes a Todo as payload (body), and updates title and done for the already existing Todo with id in URL.
-
-// DELETE /todos/:id?key=[YOUR API KEY]
-// Deletes a Todo with id in URL
-
-

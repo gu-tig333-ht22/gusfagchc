@@ -5,15 +5,26 @@ import 'dart:convert';
 import 'package:tdl_cp/api_methods.dart';
 
 class MyState extends ChangeNotifier {
-  List<ToDoTask> _list;
+  List<ToDoTask> _list = [];
   List<ToDoTask> get list => _list;
   String _filter = '/all';
   String get filter => _filter;
 
-  MyState(this._list);
+  //MyState(this._list);
 
-  void addTask(ToDoTask task) {
+  void listInit() async {
+    _list = await APIhandler.fetchToDoList();
+    notifyListeners();
+  }
+
+  void addTask(ToDoTask task) async {
     _list.add(task);
+    //
+    notifyListeners();
+
+    var apiData = await APIhandler.postToDo(task);
+    updateListState(apiData);
+    //
     notifyListeners();
   }
 
