@@ -75,8 +75,9 @@ class ToDoListView extends StatelessWidget {
                   CreateTaskView(ToDoTask(title: '', done: false)),
             ),
           );
-
-          state.addTask(recievedData);
+          if (recievedData != null) {
+            state.addTask(recievedData);
+          }
         },
       ),
     );

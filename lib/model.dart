@@ -10,8 +10,6 @@ class MyState extends ChangeNotifier {
   String _filter = '/all';
   String get filter => _filter;
 
-  //MyState(this._list);
-
   void listInit() async {
     _list = await APIhandler.fetchToDoList();
     notifyListeners();
