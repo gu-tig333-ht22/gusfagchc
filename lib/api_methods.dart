@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import './model.dart';
 
+//skickar koden igen
+
 class APIhandler {
   static String _apiKey = 'f740e31c-251c-4bdf-a602-edc76ac6f7b8';
   static String _uri = 'https://todoapp-api.apps.k8s.gu.se/';
